@@ -1,0 +1,205 @@
+---
+- name: Fact dock user
+  set_fact:
+    dock_user: '{{ dock_user | default(homebrew_user) | default(ansible_user_id) }}'
+  tags:
+    - dock
+
+- become: '{{ (dock_user != ansible_user_id) | bool }}'
+  become_user: '{{ dock_user }}'
+  block:
+    - name: Install required package
+      ignore_errors: True
+      homebrew:
+        name: dockutil
+        greedy: True
+        state: present
+      tags:
+        - tunnelblick
+
+    - name: Aple interface style
+      notify:
+        - Kill dock
+      osx_defaults:
+        domain: NSGlobalDomain
+        key: AppleInterfaceStyle
+        type: string
+        value: '{{ dock_interface_style }}'
+        state: present
+      tags:
+        - dock
+
+    - name: Auto hide
+      notify:
+        - Kill dock
+      osx_defaults:
+        domain: com.apple.dock
+        key: autohide
+        type: bool
+        value: '{{ dock_auto_hide }}'
+        state: present
+      tags:
+        - dock
+
+    - name: Show process indicator
+      notify:
+        - Kill dock
+      osx_defaults:
+        domain: com.apple.dock
+        key: show-process-indicators
+        type: bool
+        value: '{{ dock_show_process_indicator }}'
+        state: present
+      tags:
+        - dock
+
+    - name: Launch animation
+      notify:
+        - Kill dock
+      osx_defaults:
+        domain: com.apple.dock
+        key: launchanim
+        type: bool
+        value: '{{ dock_launch_animation }}'
+        state: present
+      tags:
+        - dock
+
+    - name: Large size
+      notify:
+        - Kill dock
+      osx_defaults:
+        domain: com.apple.dock
+        key: largesize
+        type: float
+        value: '{{ dock_large_size }}'
+        state: present
+      tags:
+        - dock
+
+    - name: Tile size
+      notify:
+        - Kill dock
+      osx_defaults:
+        domain: com.apple.dock
+        key: tilesize
+        type: float
+        value: '{{ dock_tile_size }}'
+        state: present
+      tags:
+        - dock
+
+    - name: Show recent apps
+      notify:
+        - Kill dock
+      osx_defaults:
+        domain: com.apple.dock
+        key: show-recent
+        type: bool
+        value: '{{ dock_show_recent_apps }}'
+        state: present
+      tags:
+        - dock
+
+    - name: Enable magnification
+      notify:
+        - Kill dock
+      osx_defaults:
+        domain: com.apple.dock
+        key: magnification
+        type: bool
+        value: '{{ dock_magnification }}'
+        state: present
+      tags:
+        - dock
+
+    - name: Minimize to application
+      notify:
+        - Kill dock
+      osx_defaults:
+        domain: com.apple.dock
+        key: minimize-to-application
+        type: bool
+        value: '{{ dock_minimize_to_app }}'
+        state: present
+      tags:
+        - dock
+
+    - name: Show hidden
+      notify:
+        - Kill dock
+      osx_defaults:
+        domain: com.apple.dock
+        key: showhidden
+        type: bool
+        value: '{{ dock_show_hidden }}'
+        state: present
+      tags:
+        - dock
+
+    - name: Corner action topleft
+      notify:
+        - Kill dock
+      osx_defaults:
+        domain: com.apple.dock
+        key: wvous-tl-corner
+        type: int
+        value: '{{ dock_hot_corner_top_left }}'
+        state: present
+      tags:
+        - dock
+
+    - name: Corner action bottomleft
+      notify:
+        - Kill dock
+      osx_defaults:
+        domain: com.apple.dock
+        key: wvous-bl-corner
+        type: int
+        value: '{{ dock_hot_corner_bottom_left }}'
+        state: present
+      tags:
+        - dock
+
+    - name: Corner action topright
+      notify:
+        - Kill dock
+      osx_defaults:
+        domain: com.apple.dock
+        key: wvous-tr-corner
+        type: int
+        value: '{{ dock_hot_corner_top_right }}'
+        state: present
+      tags:
+        - dock
+
+    - name: Corner action bottomright
+      notify:
+        - Kill dock
+      osx_defaults:
+        domain: com.apple.dock
+        key: wvous-br-corner
+        type: int
+        value: '{{ dock_hot_corner_bottom_right }}'
+        state: present
+      tags:
+        - dock
+
+    - name: Clear dock apps
+      shell: dockutil --remove all
+      tags:
+        - dock
+
+    - name: Add general apps
+      loop: '{{ dock_general_apps }}'
+      shell: dockutil --add "{{ item.name | default(item) }}" --section apps{% if item.type | default(False) %} --type {{ item.type }}{% endif %}{% if item.label | default(False) %} --label {{ item.label }}{% endif %}
+      tags:
+        - dock
+
+    - name: Add other apps
+      loop: '{{ dock_other_apps }}'
+      shell: dockutil --add "{{ item.name | default(item) }}" --section others{% if item.type | default(False) %} --type {{ item.type }}{% endif %}{% if item.label | default(False) %} --label {{ item.label }}{% endif %}
+      tags:
+        - dock
+
+...
