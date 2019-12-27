@@ -1,0 +1,9 @@
+---
+- name: Kill dock
+  command: killall Dock
+  register: dock_kill
+  failed_when: dock_kill.rc != 0 and "No matching processes belonging to you were found" not in dock_kill.stderr
+  become: '{{ (dock_user != ansible_user_id) | bool }}'
+  become_user: '{{ dock_user }}'
+
+...

@@ -1,0 +1,56 @@
+---
+# @var dock_user:description: User to run user-specific commands
+# @var dock_user:value: dock_user | default(homebrew_user) | default(ansible_user_id)
+# dock_user:
+
+# @var dock_interface_style:description: Apple interface style
+dock_interface_style: Dark
+
+# @var dock_auto_hide:description: Auto hide
+dock_auto_hide: True
+
+# @var dock_show_process_indicator:description: Show process indicator
+dock_show_process_indicator: False
+
+# @var dock_launch_animation:description: Launch animation
+dock_launch_animation: True
+
+# @var dock_large_size:description: Large size
+dock_large_size: 60
+
+# @var dock_tile_size:description: Tile size
+dock_tile_size: 30
+
+# @var dock_show_recent_apps:description: Show recent apps
+dock_show_recent_apps: False
+
+# @var dock_magnification:description: Enable magnification
+dock_magnification: True
+
+# @var dock_minimize_to_app:description: Minimize to application
+dock_minimize_to_app: True
+
+# @var dock_show_hidden:description: Show hidden
+dock_show_hidden: True
+
+# @var dock_hot_corner_top_left:description: Top left corner action
+dock_hot_corner_top_left: 2
+
+# @var dock_hot_corner_bottom_left:description: Bottom left corner action
+dock_hot_corner_bottom_left: 3
+
+# @var dock_hot_corner_top_right:description: Top right corner action
+dock_hot_corner_top_right: 2
+
+# @var dock_hot_corner_bottom_right:description: Bottom right corner action
+dock_hot_corner_bottom_right: 3
+
+# @var dock_general_apps:description: Apps listed on main area within dock
+dock_general_apps:
+  - /System/Applications/Launchpad.app
+
+# @var dock_other_apps:description: Apps listed on other area within dock
+dock_other_apps:
+  - /Users/${USER}/Downloads
+
+...
