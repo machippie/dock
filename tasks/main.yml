@@ -12,7 +12,6 @@
       ignore_errors: True
       homebrew:
         name: dockutil
-        greedy: True
         state: present
       tags:
         - tunnelblick
@@ -187,6 +186,7 @@
 
     - name: Check defined apps
       register: dock_defined_apps
+      check_mode: False
       failed_when: dock_defined_apps.rc != 0
       changed_when: False
       shell: dockutil --list | cut -f2
