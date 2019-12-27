@@ -185,20 +185,50 @@
       tags:
         - dock
 
+    - name: Check defined apps
+      register: dock_defined_apps
+      failed_when: dock_defined_apps.rc != 0
+      changed_when: False
+      shell: dockutil --list | cut -f2
+      tags:
+        - dock
+
+    - name: Check requested apps
+      set_fact:
+        dock_requested_apps: "{{ (dock_general_apps + dock_other_apps) | map('regex_replace', '(.+)', 'file://\\1/') | map('regex_replace', ' ', '%20') | list }}"
+      tags:
+        - dock
+
+    - name: Diff between apps
+      set_fact:
+        dock_diff_apps: "{{ dock_defined_apps.stdout_lines | difference(dock_requested_apps) | length > 0 or dock_requested_apps | difference(dock_defined_apps.stdout_lines) | length > 0 }}"
+      tags:
+        - dock
+
     - name: Clear dock apps
-      shell: dockutil --remove all
+      when: dock_diff_apps
+      register: dock_remove
+      failed_when: dock_remove.rc != 0
+      changed_when: True
+      command: dockutil --remove all
       tags:
         - dock
 
     - name: Add general apps
+      when: dock_diff_apps
+      failed_when: False
+      changed_when: True
       loop: '{{ dock_general_apps }}'
-      shell: dockutil --add "{{ item.name | default(item) }}" --section apps{% if item.type | default(False) %} --type {{ item.type }}{% endif %}{% if item.label | default(False) %} --label {{ item.label }}{% endif %}
+      command: dockutil --add "{{ item.name | default(item) }}" --section apps{% if item.type | default(False) %} --type {{ item.type }}{% endif %}{% if item.label | default(False) %} --label {{ item.label }}{% endif %}
       tags:
         - dock
 
     - name: Add other apps
+      when: dock_diff_apps
+      failed_when: False
+      changed_when: True
       loop: '{{ dock_other_apps }}'
-      shell: dockutil --add "{{ item.name | default(item) }}" --section others{% if item.type | default(False) %} --type {{ item.type }}{% endif %}{% if item.label | default(False) %} --label {{ item.label }}{% endif %}
+      command: dockutil --add "{{ item.name | default(item) }}" --section others{% if item.type | default(False) %} --type {{ item.type }}{% endif %}{% if item.label | default(False) %} --label {{ item.label }}{% endif %}
       tags:
         - dock
 
