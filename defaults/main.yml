@@ -12,25 +12,25 @@ dock_auto_hide: True
 # @var dock_show_process_indicator:description: Show process indicator
 dock_show_process_indicator: False
 
-# @var dock_launch_animation:description: Apple interface style
+# @var dock_launch_animation:description: Launch animation
 dock_launch_animation: True
 
-# @var dock_large_size:description: Apple interface style
+# @var dock_large_size:description: Large size
 dock_large_size: 60
 
-# @var dock_tile_size:description: Apple interface style
+# @var dock_tile_size:description: Tile size
 dock_tile_size: 30
 
-# @var dock_show_recent_apps:description: Apple interface style
+# @var dock_show_recent_apps:description: Show recent apps
 dock_show_recent_apps: False
 
-# @var dock_magnification:description: Apple interface style
+# @var dock_magnification:description: Enable magnification
 dock_magnification: True
 
-# @var dock_minimize_to_app:description: Apple interface style
+# @var dock_minimize_to_app:description: Minimize to application
 dock_minimize_to_app: True
 
-# @var dock_show_hidden:description: Apple interface style
+# @var dock_show_hidden:description: Show hidden
 dock_show_hidden: True
 
 # @var dock_hot_corner_top_left:description: Apple interface style
