@@ -94,7 +94,7 @@
         - Kill dock
       osx_defaults:
         domain: com.apple.dock
-        key: show-recent
+        key: show-recents
         type: bool
         value: '{{ dock_show_recent_apps }}'
         state: present
