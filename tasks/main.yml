@@ -189,7 +189,7 @@
       check_mode: False
       failed_when: dock_defined_apps.rc != 0
       changed_when: False
-      shell: dockutil --list | cut -f2
+      shell: /usr/local/bin/dockutil --list | cut -f2
       tags:
         - dock
 
@@ -210,7 +210,7 @@
       register: dock_remove
       failed_when: dock_remove.rc != 0
       changed_when: True
-      command: dockutil --remove all
+      command: /usr/local/bin/dockutil --remove all
       tags:
         - dock
 
@@ -219,7 +219,7 @@
       failed_when: False
       changed_when: True
       loop: '{{ dock_general_apps }}'
-      command: dockutil --add "{{ item.name | default(item) }}" --section apps{% if item.type | default(False) %} --type {{ item.type }}{% endif %}{% if item.label | default(False) %} --label {{ item.label }}{% endif %}
+      command: /usr/local/bin/dockutil --add "{{ item.name | default(item) }}" --section apps{% if item.type | default(False) %} --type {{ item.type }}{% endif %}{% if item.label | default(False) %} --label {{ item.label }}{% endif %}
       tags:
         - dock
 
@@ -228,7 +228,7 @@
       failed_when: False
       changed_when: True
       loop: '{{ dock_other_apps }}'
-      command: dockutil --add "{{ item.name | default(item) }}" --section others{% if item.type | default(False) %} --type {{ item.type }}{% endif %}{% if item.label | default(False) %} --label {{ item.label }}{% endif %}
+      command: /usr/local/bin/dockutil --add "{{ item.name | default(item) }}" --section others{% if item.type | default(False) %} --type {{ item.type }}{% endif %}{% if item.label | default(False) %} --label {{ item.label }}{% endif %}
       tags:
         - dock
 
