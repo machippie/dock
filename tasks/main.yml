@@ -14,7 +14,7 @@
         name: dockutil
         state: present
       tags:
-        - tunnelblick
+        - dock
 
     - name: Aple interface style
       notify:
